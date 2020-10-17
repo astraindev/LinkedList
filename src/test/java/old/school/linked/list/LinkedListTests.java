@@ -93,11 +93,12 @@ public class LinkedListTests {
     }
 
     @Test
-    void testInsert() {
+    void insertIndex() {
         LinkedList<Integer> list = new LinkedList<>();
         list.insert(1).insert(2).insert(4).insert(5);
-        list.insert(2, 3);
+        list.insert(2, 3).insert(4, 42);
         Assertions.assertEquals(3, list.get(2));
+        Assertions.assertEquals(42, list.get(4));
         list.insert(0, 3);
         Assertions.assertEquals(3, list.get(0));
         list.insert(list.length() - 1, 3);

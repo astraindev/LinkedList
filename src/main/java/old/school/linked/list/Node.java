@@ -2,24 +2,49 @@ package old.school.linked.list;
 
 import java.util.Iterator;
 
-public class Node<T> implements Iterator<Node<T>> {
-    private final T item;
-    private Node<T> nextNode;
+/**
+ * Represents a node for a linked list. Nodes store a generic element and a pointer to the next node.
+ *
+ * @param <E> Any Object type
+ */
+public class Node<E> implements Iterator<Node<E>> {
+    private final E element;
+    private Node<E> nextNode;
 
-    public Node(T item) {
-        this.item = item;
+    /**
+     * Constructor that stores the given element. The next node is set to null.
+     *
+     * @param element The element to store in the node
+     */
+    public Node(E element) {
+        this.element = element;
         this.nextNode = null;
     }
 
-    public T getItem() {
-        return item;
+    /**
+     * Returns the stored element
+     *
+     * @return the generic element that was stored in the constructor
+     */
+    public E getElement() {
+        return element;
     }
 
-    public void setNextNode(Node<T> nextNode) {
+    /**
+     * Set the next node in the linked list
+     *
+     * @param nextNode the next node
+     */
+    public void setNextNode(Node<E> nextNode) {
         this.nextNode = nextNode;
     }
 
-    public Node<T> getNextNode() {
+    /**
+     * Gets the next node in the linked list
+     *
+     * @return the next node
+     */
+    public Node<E> getNextNode() {
         return nextNode;
     }
 
@@ -29,14 +54,14 @@ public class Node<T> implements Iterator<Node<T>> {
     }
 
     @Override
-    public Node<T> next() {
+    public Node<E> next() {
         return nextNode;
     }
 
     @Override
     public boolean equals(Object object) {
         if (object instanceof Node) {
-            return item.equals(((Node<?>) object).item);
+            return element.equals(((Node<?>) object).element);
         }
         return false;
     }
