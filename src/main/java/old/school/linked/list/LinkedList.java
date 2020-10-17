@@ -253,6 +253,16 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
 
     /* END Iterator */
 
+    @Override
+    public int hashCode() {
+        int hash = 1033;
+        hash = 5039 * hash + size;
+        hash = 5039 * hash + (head == null ? 0 : head.hashCode());
+        hash = 5039 * hash + super.hashCode();
+
+        return hash;
+    }
+
     /**
      * Convenience method to throw the ArrayIndexOutOfBoundsException.
      *
