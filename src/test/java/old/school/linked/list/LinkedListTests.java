@@ -71,7 +71,7 @@ public class LinkedListTests {
     }
 
     @Test
-    void testGet() {
+    void getIndex() {
         LinkedList<Integer> list = new LinkedList<>();
         list.append(1).append(2).append(3).append(4).append(5);
         Assertions.assertEquals(3, list.get(2));
@@ -96,7 +96,8 @@ public class LinkedListTests {
     void insertIndex() {
         LinkedList<Integer> list = new LinkedList<>();
         list.insert(1).insert(2).insert(4).insert(5);
-        list.insert(2, 3).insert(4, 42);
+        list.insert(2, 3);
+        list.insert(4, 42);
         Assertions.assertEquals(3, list.get(2));
         Assertions.assertEquals(42, list.get(4));
         list.insert(0, 3);
@@ -201,5 +202,29 @@ public class LinkedListTests {
         Assertions.assertEquals(2, list.length());
 
 
+    }
+
+    @Test
+    void indexOf() {
+        LinkedList<Integer> list = new LinkedList<>();
+        list.append(1).append(42).append(3).append(42).append(5).append(42).append(7);
+        Assertions.assertEquals(1, list.indexOf(42));
+        Assertions.assertEquals(-1, list.indexOf(72));
+    }
+
+    @Test
+    void lastIndexOf() {
+        LinkedList<Integer> list = new LinkedList<>();
+        list.append(1).append(42).append(3).append(42).append(5).append(42).append(7);
+        Assertions.assertEquals(5, list.lastIndexOf(42));
+        Assertions.assertEquals(-1, list.lastIndexOf(72));
+    }
+
+    @Test
+    void contains() {
+        LinkedList<Integer> list = new LinkedList<>();
+        list.append(1).append(42).append(3).append(42).append(5).append(42).append(7);
+        Assertions.assertTrue(list.contains(42));
+        Assertions.assertFalse(list.contains(72));
     }
 }

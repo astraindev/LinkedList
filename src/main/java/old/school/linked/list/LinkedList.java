@@ -131,13 +131,14 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
      *
      * @param index where to store the element
      * @param element the element to insert
-     * @return a reference back to this linked list
      */
-    public LinkedList<E> insert(int index, E element) {
-        if (!(index > 0)) return insert(element);
+    public void insert(int index, E element) {
+        if (!(index > 0)) {
+            insert(element);
+            return;
+        }
 
         gotoIndex(index - 1).insertNode(element, false);
-        return this;
     }
 
     /**
@@ -215,6 +216,36 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
         return element;
     }
 
+    /**
+     * Returns the index of the first occurrence of the specified element in
+     * this list, or -1 if this list does not contain the element.
+     *
+     * @param element element to search for
+     * @return the index of the first occurrence of the specified element in
+     *         this list, or -1 if this list does not contain the element
+     */
+    public int indexOf(E element) {
+        return indexOfElement(element, false);
+    }
+
+    /**
+     * Returns the index of the last occurrence of the specified element in
+     * this list, or -1 if this list does not contain the element.
+     *
+     * @param element element to search for
+     * @return the index of the last occurrence of the specified element in
+     *         this list, or -1 if this list does not contain the element
+     */
+    public int lastIndexOf(E element) {
+        return indexOfElement(element, true);
+    }
+
+    public boolean contains(E element) {
+        return indexOf(element) != -1;
+    }
+
+    /* BEGIN Iterator */
+
     @Override
     public void remove() {
         if (! didNext) return;
@@ -225,8 +256,6 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
 
         delete(iteratorIndex);
     }
-
-    /* BEGIN Iterator */
 
     @Override
     public Iterator<E> iterator() {
@@ -296,5 +325,30 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
         previous.setNextNode(newNode);
         current = newNode;
         size++;
+    }
+
+    /**
+     * Convenience method that finds the index of the given element. If goOn
+     * is true, then return the last index, otherwise return the first index.
+     *
+     * @param element the element to match
+     * @param goOn if true, match last element, otherwise match first element
+     * @return index of element, otherwise -1
+     */
+    private int indexOfElement(E element, boolean goOn ) {
+        int found = -1;
+        int index = 0;
+
+        for (E item : this) {
+            if (item.equals(element)) {
+                found = index;
+
+                if (! goOn) break;
+            }
+
+            index++;
+        }
+
+        return found;
     }
 }
