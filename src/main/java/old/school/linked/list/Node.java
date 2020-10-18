@@ -11,9 +11,7 @@ public class Node<E> implements Iterator<Node<E>> {
     private E element;
     private Node<E> nextNode;
 
-    private Node() {
-        super();
-    }
+    private Node() { }
 
     /**
      * Constructor that stores the given element. The next node is set to null.
@@ -21,7 +19,6 @@ public class Node<E> implements Iterator<Node<E>> {
      * @param element The element to store in the node
      */
     public Node(E element) {
-        this();
         this.element = element;
         this.nextNode = null;
     }
