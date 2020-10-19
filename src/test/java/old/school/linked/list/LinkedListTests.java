@@ -11,10 +11,9 @@ public class LinkedListTests {
     @Test
     void isEmpty() {
         LinkedList<Integer> list = new LinkedList<>();
-        Assertions.assertTrue(list.isEmpty());
         list.append(42);
         Assertions.assertFalse(list.isEmpty());
-        Assertions.assertEquals(1, list.length());
+        Assertions.assertEquals(1, list.size());
         list.pop();
         Assertions.assertTrue(list.isEmpty());
         list.append(42);
@@ -23,18 +22,17 @@ public class LinkedListTests {
     }
 
     @Test
-    void length() {
+    void size() {
         LinkedList<Integer> list = new LinkedList<>();
-        Assertions.assertEquals(0, list.length());
         list.append(1).append(2).append(3).append(4).append(5);
-        Assertions.assertEquals(5, list.length());
+        Assertions.assertEquals(5, list.size());
         list.delete(2);
-        Assertions.assertEquals(4, list.length());
+        Assertions.assertEquals(4, list.size());
         list.pop();
         list.pop();
         list.pop();
         list.pop();
-        Assertions.assertEquals(0, list.length());
+        Assertions.assertEquals(0, list.size());
     }
 
     @Test
@@ -102,8 +100,8 @@ public class LinkedListTests {
         Assertions.assertEquals(42, list.get(4));
         list.insert(0, 3);
         Assertions.assertEquals(3, list.get(0));
-        list.insert(list.length() - 1, 3);
-        Assertions.assertEquals(3, list.get(list.length() - 2));
+        list.insert(list.size() - 1, 3);
+        Assertions.assertEquals(3, list.get(list.size() - 2));
     }
 
     @Test
@@ -199,7 +197,7 @@ public class LinkedListTests {
         Assertions.assertEquals(5, iterator.next());
         iterator.remove();
         Assertions.assertFalse(iterator.hasNext());
-        Assertions.assertEquals(2, list.length());
+        Assertions.assertEquals(2, list.size());
 
 
     }

@@ -1,6 +1,9 @@
 package old.school.linked.list;
 
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * This is an old-school linked list. Pretty much straight out of the
@@ -18,10 +21,10 @@ import java.util.Iterator;
  *
  * @param <E> the type of element stored in the nodes of the linked list.
  */
-public class LinkedList<E> implements Iterator<E>, Iterable<E> {
+public class LinkedList<E> implements Iterator<E>, Iterable<E>, List<E> {
     private Node<E> head;
     private Node<E> current;
-    private int size;
+    private int length;
     private int iteratorIndex;
     private boolean didNext;
 
@@ -31,7 +34,12 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
     public LinkedList() {
         this.head = null;
         this.current = null;
-        this.size = 0;
+        this.length = 0;
+    }
+
+    @Override
+    public int size() {
+        return length;
     }
 
     /**
@@ -42,15 +50,6 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
      */
     public boolean isEmpty() {
         return head == null;
-    }
-
-    /**
-     * The length of the linked list.
-     *
-     * @return the number of elements in the linked list
-     */
-    public int length() {
-        return size;
     }
 
     /**
@@ -93,7 +92,7 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
         checkIndex(index);
         begin();
 
-        for (int i = 0; i < size; i ++) {
+        for (int i = 0; i < length; i ++) {
             if (i == index) break;
             current = current.next();
         }
@@ -111,6 +110,36 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
         return gotoIndex(index).get();
     }
 
+    @Override
+    public E set(int index, E element) {
+        return null;
+    }
+
+    @Override
+    public void add(int index, E element) {
+
+    }
+
+    @Override
+    public E remove(int index) {
+        return delete(index);
+    }
+
+    @Override
+    public ListIterator<E> listIterator() {
+        return null;
+    }
+
+    @Override
+    public ListIterator<E> listIterator(int index) {
+        return null;
+    }
+
+    @Override
+    public List<E> subList(int fromIndex, int toIndex) {
+        return null;
+    }
+
     /**
      * Inserts the element at the beginning (head) of the linked list.
      *
@@ -122,7 +151,7 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
         newNode.setNextNode(head);
         head = newNode;
         current = head;
-        size++;
+        length++;
         return this;
     }
 
@@ -150,7 +179,7 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
     public LinkedList<E> append(E element) {
         if (isEmpty()) return insert(element);
 
-        gotoIndex(size - 1).insertNode(element, true);
+        gotoIndex(length - 1).insertNode(element, true);
         return this;
     }
 
@@ -162,21 +191,21 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
     public E pop() {
         if (isEmpty()) return null;
 
-        if (!(size > 1)) {
+        if (!(length > 1)) {
             E element = head.getElement();
             head = null;
             current = null;
-            size = 0;
+            length = 0;
             return element;
         }
 
-        gotoIndex(size - 2);
+        gotoIndex(length - 2);
         Node<E> previous = current;
-        gotoIndex(size - 1);
+        gotoIndex(length - 1);
         previous.setNextNode(null);
         E element = current.getElement();
         current = previous;
-        size--;
+        length--;
         return element;
     }
 
@@ -188,12 +217,12 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
     public E delete() {
         if (isEmpty()) return null;
 
-        if (size == 1) return pop();
+        if (length == 1) return pop();
 
         E element = head.getElement();
         head = head.getNextNode();
         current = head;
-        size--;
+        length--;
         return element;
     }
 
@@ -212,7 +241,7 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
         E element = current.getElement();
         previous.setNextNode(current.getNextNode());
         current = previous;
-        size--;
+        length--;
         return element;
     }
 
@@ -224,7 +253,8 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
      * @return the index of the first occurrence of the specified element in
      *         this list, or -1 if this list does not contain the element
      */
-    public int indexOf(E element) {
+    @Override
+    public int indexOf(Object element) {
         return indexOfElement(element, false);
     }
 
@@ -236,11 +266,13 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
      * @return the index of the last occurrence of the specified element in
      *         this list, or -1 if this list does not contain the element
      */
-    public int lastIndexOf(E element) {
+    @Override
+    public int lastIndexOf(Object element) {
         return indexOfElement(element, true);
     }
 
-    public boolean contains(E element) {
+    @Override
+    public boolean contains(Object element) {
         return indexOf(element) != -1;
     }
 
@@ -265,9 +297,59 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
     }
 
     @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return null;
+    }
+
+    @Override
+    public boolean add(E e) {
+        return false;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends E> c) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
     public boolean hasNext() {
         if (isEmpty()) return false;
-        return iteratorIndex < size;
+        return iteratorIndex < length;
     }
 
     @Override
@@ -285,7 +367,7 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
     @Override
     public int hashCode() {
         int hash = 1033;
-        hash = 5039 * hash + size;
+        hash = 5039 * hash + length;
         hash = 5039 * hash + (head == null ? 0 : head.hashCode());
         hash = 5039 * hash + super.hashCode();
 
@@ -300,7 +382,7 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
      */
     private void checkIndex(int index) throws ArrayIndexOutOfBoundsException {
         if (isEmpty()) throw new ArrayIndexOutOfBoundsException("Linked list is empty");
-        if ((!(index < size)) || index < 0) throw new ArrayIndexOutOfBoundsException("size: " + size + ", index: " + index);
+        if ((!(index < length)) || index < 0) throw new ArrayIndexOutOfBoundsException("size: " + length + ", index: " + index);
     }
 
     /**
@@ -324,18 +406,20 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E> {
         newNode.setNextNode(current);
         previous.setNextNode(newNode);
         current = newNode;
-        size++;
+        length++;
     }
 
     /**
      * Convenience method that finds the index of the given element. If goOn
      * is true, then return the last index, otherwise return the first index.
      *
-     * @param element the element to match
+     * @param obj the element to match
      * @param goOn if true, match last element, otherwise match first element
      * @return index of element, otherwise -1
      */
-    private int indexOfElement(E element, boolean goOn ) {
+    private int indexOfElement(Object obj, boolean goOn ) {
+        E element = (E) obj;
+
         int found = -1;
         int index = 0;
 
