@@ -1,40 +1,14 @@
 package old.school.linked.list;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
-/**
- * This is an old-school linked list. Pretty much straight out of the
- * textbooks save the method names. The linked list is single meaning you can
- * only go forward, not backward. This means that many methods (like append
- * and get) take O(n) time.
- *
- * The main element storage methods are: insert, delete, append, and pop. The
- * delete method is traditionally named remove. However, I'm using an Iterator
- * which means the remove method is taken. The insert/delete use indexes
- * whereas the append/pop methods are only at the end of the linked list.
- *
- * Methods for traversing the linked list include: begin, get, nextElement,
- * and gotoIndex. Of course, the iterator can be used as well.
- *
- * @param <E> the type of element stored in the nodes of the linked list.
- */
-public class LinkedList<E> implements Iterator<E>, Iterable<E>, List<E> {
+public class LinkedList<E> implements List<E> {
     private Node<E> head;
-    private Node<E> current;
+    private Node<E> tail;
     private int length;
-    private int iteratorIndex;
-    private boolean didNext;
 
-    /**
-     * Creates an empty linked list.
-     */
     public LinkedList() {
-        this.head = null;
-        this.current = null;
-        this.length = 0;
+        clear();
     }
 
     @Override
@@ -42,397 +16,367 @@ public class LinkedList<E> implements Iterator<E>, Iterable<E>, List<E> {
         return length;
     }
 
-    /**
-     * Determines if there are elements in the list or not. A newly contructed linked list is always empty.
-     *
-     * @return true if there are no elements in the linked list, otherwise
-     *         false
-     */
+    @Override
     public boolean isEmpty() {
         return head == null;
     }
 
-    /**
-     * Gets the element at the current position. See the begin, gotoIndex, and
-     * nextElement methods.
-     *
-     * @return the current element
-     *
-     */
-    public E get() {
-        return current == null ? null : current.getElement();
-    }
-
-    /**
-     * Rewinds back to the beginning (head) of the linked list.
-     */
-    public void begin() {
-        current = head;
-    }
-
-    /**
-     * Move forward to the next element in the linked list.
-     *
-     * @return a pointer back to this linked list
-     */
-    public LinkedList<E> nextElement() {
-        if (current != null) {
-            current = current.next();
-        }
-        return this;
-    }
-
-    /**
-     * Moves to the element at the given index.
-     *
-     * @param index the index of the element in the linked list
-     * @return a pointer back to this linked list
-     */
-    public LinkedList<E> gotoIndex(int index) {
-        checkIndex(index);
-        begin();
-
-        for (int i = 0; i < length; i ++) {
-            if (i == index) break;
-            current = current.next();
-        }
-
-        return this;
-    }
-
-    /**
-     * Goes to the index and gets that element
-     *
-     * @param index index of the element
-     * @return the element at the given index
-     */
-    public E get(int index) {
-        return gotoIndex(index).get();
-    }
-
     @Override
-    public E set(int index, E element) {
-        return null;
-    }
-
-    @Override
-    public void add(int index, E element) {
-
-    }
-
-    @Override
-    public E remove(int index) {
-        return delete(index);
-    }
-
-    @Override
-    public ListIterator<E> listIterator() {
-        return null;
-    }
-
-    @Override
-    public ListIterator<E> listIterator(int index) {
-        return null;
-    }
-
-    @Override
-    public List<E> subList(int fromIndex, int toIndex) {
-        return null;
-    }
-
-    /**
-     * Inserts the element at the beginning (head) of the linked list.
-     *
-     * @param element the element to insert
-     * @return a reference back to this linked list
-     */
-    public LinkedList<E> insert(E element) {
-        Node<E> newNode = new Node<>(element);
-        newNode.setNextNode(head);
-        head = newNode;
-        current = head;
-        length++;
-        return this;
-    }
-
-    /**
-     * Inserts the element at the given index of the linked list.
-     *
-     * @param index where to store the element
-     * @param element the element to insert
-     */
-    public void insert(int index, E element) {
-        if (!(index > 0)) {
-            insert(element);
-            return;
-        }
-
-        gotoIndex(index - 1).insertNode(element, false);
-    }
-
-    /**
-     * Appends the element ot the end of the linked list
-     *
-     * @param element the element to be appended
-     * @return a reference back to this linked list
-     */
-    public LinkedList<E> append(E element) {
-        if (isEmpty()) return insert(element);
-
-        gotoIndex(length - 1).insertNode(element, true);
-        return this;
-    }
-
-    /**
-     * Removes and returns the last element from the linked list.
-     *
-     * @return the last element on the linked list.
-     */
-    public E pop() {
-        if (isEmpty()) return null;
-
-        if (!(length > 1)) {
-            E element = head.getElement();
-            head = null;
-            current = null;
-            length = 0;
-            return element;
-        }
-
-        gotoIndex(length - 2);
-        Node<E> previous = current;
-        gotoIndex(length - 1);
-        previous.setNextNode(null);
-        E element = current.getElement();
-        current = previous;
-        length--;
-        return element;
-    }
-
-    /**
-     * Deletes and returns the first element on the linked list
-     *
-     * @return the first element
-     */
-    public E delete() {
-        if (isEmpty()) return null;
-
-        if (length == 1) return pop();
-
-        E element = head.getElement();
-        head = head.getNextNode();
-        current = head;
-        length--;
-        return element;
-    }
-
-    /**
-     * Deletes and returns the element that is at the given index.
-     *
-     * @param index the index where the element is located
-     * @return the element at the given index
-     */
-    public E delete(int index) {
-        if (isEmpty() || !(index > 0)) return delete();
-
-        gotoIndex(index - 1);
-        Node<E> previous = current;
-        gotoIndex(index);
-        E element = current.getElement();
-        previous.setNextNode(current.getNextNode());
-        current = previous;
-        length--;
-        return element;
-    }
-
-    /**
-     * Returns the index of the first occurrence of the specified element in
-     * this list, or -1 if this list does not contain the element.
-     *
-     * @param element element to search for
-     * @return the index of the first occurrence of the specified element in
-     *         this list, or -1 if this list does not contain the element
-     */
-    @Override
-    public int indexOf(Object element) {
-        return indexOfElement(element, false);
-    }
-
-    /**
-     * Returns the index of the last occurrence of the specified element in
-     * this list, or -1 if this list does not contain the element.
-     *
-     * @param element element to search for
-     * @return the index of the last occurrence of the specified element in
-     *         this list, or -1 if this list does not contain the element
-     */
-    @Override
-    public int lastIndexOf(Object element) {
-        return indexOfElement(element, true);
-    }
-
-    @Override
-    public boolean contains(Object element) {
-        return indexOf(element) != -1;
-    }
-
-    /* BEGIN Iterator */
-
-    @Override
-    public void remove() {
-        if (! didNext) return;
-
-        if (iteratorIndex > 0) {
-            iteratorIndex--;
-        }
-
-        delete(iteratorIndex);
+    public boolean contains(Object o) {
+        return indexOf(o) != -1;
     }
 
     @Override
     public Iterator<E> iterator() {
-        iteratorIndex = 0;
-        didNext = false;
-        return this;
+        return new LinkedListIterator();
     }
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        Object[] array = new Object[length];
+        Node<E> obj = head;
+
+        for (int i = 0; i < length; i++) {
+            array[i] = obj.element;
+            obj = obj.next;
+        }
+
+        return array;
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        if (a == null) throw new NullPointerException();
+
+        List<T> array = (List<T>) new ArrayList<>(this);
+
+        return array.toArray(a);
     }
 
     @Override
     public boolean add(E e) {
-        return false;
+        Node<E> node = new Node<>(e, null);
+
+        if (isEmpty()) {
+            head = tail = node;
+            length = 1;
+        } else {
+            tail.next = node;
+            tail = node;
+            length++;
+        }
+
+        return true;
     }
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        int index = indexOf(o);
+        if (index == -1) return false;
+
+        remove(index);
+        return true;
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        boolean found = true;
+
+        for (Object obj : c) {
+            if (! contains(obj)) {
+                found = false;
+                break;
+            }
+        }
+
+        return found;
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        return false;
+        if (c.isEmpty()) return false;
+
+        for (E element : c) {
+            add(element);
+        }
+
+        return true;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        return false;
+        if (c.isEmpty()) return false;
+
+        int count = index;
+
+        for (E element : c) {
+            add(count++, element);
+        }
+
+        return true;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        boolean found = false;
+
+        Iterator<E> iterator = iterator();
+
+        while (iterator.hasNext()) {
+            E element = iterator.next();
+            if (c.contains(element)) {
+                found = true;
+                iterator.remove();
+            }
+        }
+
+        return found;
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        boolean notFound = false;
+
+        Iterator<E> iterator = iterator();
+
+        while (iterator.hasNext()) {
+            E element = iterator.next();
+
+            if (! c.contains(element)) {
+                notFound = true;
+                iterator.remove();
+            }
+        }
+
+        return notFound;
     }
 
     @Override
     public void clear() {
-
+        head = tail = null;
+        length = 0;
     }
 
     @Override
-    public boolean hasNext() {
-        if (isEmpty()) return false;
-        return iteratorIndex < length;
+    public E get(int index) {
+        return getNode(index).element;
     }
 
     @Override
-    public E next() {
-        if (hasNext()) {
-            didNext = true;
-            return this.get(iteratorIndex++);
+    public E set(int index, E element) {
+        checkIndex(index, length);
+
+        // Head
+        if (index == 0) {
+            E value = head.element;
+            head.element = element;
+            return value;
         }
 
-        return null;
-    }
-
-    /* END Iterator */
-
-    @Override
-    public int hashCode() {
-        int hash = 1033;
-        hash = 5039 * hash + length;
-        hash = 5039 * hash + (head == null ? 0 : head.hashCode());
-        hash = 5039 * hash + super.hashCode();
-
-        return hash;
-    }
-
-    /**
-     * Convenience method to throw the ArrayIndexOutOfBoundsException.
-     *
-     * @param index to check
-     * @throws ArrayIndexOutOfBoundsException when out of bounds
-     */
-    private void checkIndex(int index) throws ArrayIndexOutOfBoundsException {
-        if (isEmpty()) throw new ArrayIndexOutOfBoundsException("Linked list is empty");
-        if ((!(index < length)) || index < 0) throw new ArrayIndexOutOfBoundsException("size: " + length + ", index: " + index);
-    }
-
-    /**
-     * Convenience method that inserts the element before (insert) or
-     * after (append). The current parameter is assumed to be set
-     * properly.
-     *
-     * @param element the element to insert
-     * @param after true to append, otherwise false to insert
-     */
-    private void insertNode(E element, boolean after) {
-        Node<E> previous = current;
-
-        if (after) {
-            current = previous.getNextNode();
-        } else {
-            current = current.getNextNode();
+        // Tail
+        if (index == length - 1) {
+            E value = tail.element;
+            tail.element = element;
+            return value;
         }
 
-        Node<E> newNode = new Node<>(element);
-        newNode.setNextNode(current);
-        previous.setNextNode(newNode);
-        current = newNode;
+        Node<E> node = getNode(index);
+        E value = node.element;
+        node.element = element;
+
+        return value;
+    }
+
+    @Override
+    public void add(int index, E element) {
+        checkIndex(index, length + 1);
+
+        // Append to end of linked list
+        if (index == length || isEmpty()) {
+            add(element);
+            return;
+        }
+
+        // Add in front of head
+        if (index == 0) {
+            head = new Node<>(element, head);
+            length++;
+            return;
+        }
+
+        // Add in the middle
+        Node<E> previous = getNode(index - 1);
+        Node<E> node = getNode(index);
+        previous.next = new Node<>(element, node);
         length++;
     }
 
-    /**
-     * Convenience method that finds the index of the given element. If goOn
-     * is true, then return the last index, otherwise return the first index.
-     *
-     * @param obj the element to match
-     * @param goOn if true, match last element, otherwise match first element
-     * @return index of element, otherwise -1
-     */
-    private int indexOfElement(Object obj, boolean goOn ) {
-        E element = (E) obj;
+    @Override
+    public E remove(int index) {
+        checkIndex(index, length);
 
-        int found = -1;
-        int index = 0;
-
-        for (E item : this) {
-            if (item.equals(element)) {
-                found = index;
-
-                if (! goOn) break;
-            }
-
-            index++;
+        // Clear when linked list only has one node
+        if (index == 0 && length == 1) {
+            E element = head.element;
+            clear();
+            return element;
         }
 
-        return found;
+        // Remove head
+        if (index == 0) {
+            E element = head.element;
+            head = head.next;
+            length--;
+            return element;
+        }
+
+        // Remove tail
+        if (index == length - 1) {
+            E element = tail.element;
+            Node<E> previous = getNode(length - 2);
+            previous.next = null;
+            tail = previous;
+            length--;
+            return element;
+        }
+
+        // Remove index that's in the middle
+        Node<E> previous = getNode(index - 1);
+        Node<E> node = getNode(index);
+        E element = node.element;
+        previous.next = node.next;
+        length--;
+
+        return element;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        return indexOfElement(o, true);
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        return indexOfElement(o, false);
+    }
+
+    @Override
+    public ListIterator<E> listIterator() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ListIterator<E> listIterator(int index) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<E> subList(int fromIndex, int toIndex) {
+        throw new UnsupportedOperationException();
+    }
+
+    private Node<E> getNode(int index) {
+        checkIndex(index, length);
+
+        Node<E> node = head;
+        int counter = 0;
+
+        while (node != null) {
+            if (counter == index) break;
+            node = node.next;
+            counter++;
+        }
+
+        return node;
+    }
+
+    private void checkIndex(int index, int size) {
+        if (!((index >= 0) && (index < size))) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+    }
+
+    private int indexOfElement(Object o, boolean stop) {
+        Node<E> node = head;
+        int counter = 0;
+        int foundIndex = -1;
+
+        while (node != null) {
+            if (node.element.equals(o)) {
+                foundIndex = counter;
+                if (stop) break;
+            }
+            node = node.next;
+            counter++;
+        }
+
+        return foundIndex;
+    }
+
+
+    private static class Node<S> {
+        S element;
+        Node<S> next;
+
+        public Node(S element, Node<S> next) {
+            this.element = element;
+            this.next = next;
+        }
+    }
+
+    public class LinkedListIterator implements Iterator<E> {
+        private Node<E> node;
+        private Node<E> previous;
+        private Node<E> previousPrevious;
+        private boolean didNext;
+
+        public LinkedListIterator() {
+            node = head;
+            previous = null;
+            previousPrevious = null;
+            didNext = false;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return node != null;
+        }
+
+        @Override
+        public E next() {
+            E element = node.element;
+            previousPrevious = previous;
+            previous = node;
+            node = node.next;
+            didNext = true;
+            return element;
+        }
+
+        @Override
+        public void remove() {
+            if (previous == null || (!didNext)) return;
+
+            didNext = false;
+
+            if (previous == head) {
+                head = head.next;
+                previous = null;
+                length--;
+                return;
+            }
+
+            if (previous == tail) {
+                previousPrevious.next = null;
+                tail = previousPrevious;
+                node = null;
+                length--;
+                return;
+            }
+
+            previousPrevious.next = node;
+            previous = previousPrevious;
+            previousPrevious = null;
+            length--;
+        }
     }
 }
