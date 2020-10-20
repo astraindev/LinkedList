@@ -1,6 +1,7 @@
 package old.school.linked.list;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -8,10 +9,15 @@ import java.util.Iterator;
 import java.util.List;
 
 class LinkedListTests {
+    LinkedList<Integer> list;
+
+    @BeforeEach
+    void beforeEach() {
+        list = new LinkedList<>();
+    }
 
     @Test
     void size() {
-        LinkedList<Integer> list = new LinkedList<>();
         Assertions.assertEquals(0, list.size());
         list.add(1);
         list.add(2);
@@ -30,7 +36,6 @@ class LinkedListTests {
 
     @Test
     void isEmpty() {
-        LinkedList<Integer> list = new LinkedList<>();
         Assertions.assertTrue(list.isEmpty());
         list.add(1);
         list.add(2);
@@ -49,7 +54,6 @@ class LinkedListTests {
 
     @Test
     void contains() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -64,7 +68,6 @@ class LinkedListTests {
 
     @Test
     void iterator() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -88,7 +91,6 @@ class LinkedListTests {
 
     @Test
     void iteratorRemove() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -200,7 +202,6 @@ class LinkedListTests {
 
     @Test
     void toArray() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -217,7 +218,6 @@ class LinkedListTests {
 
     @Test
     void genericsToArray() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -234,7 +234,6 @@ class LinkedListTests {
 
     @Test
     void add() {
-        LinkedList<Integer> list = new LinkedList<>();
         Assertions.assertTrue(list.add(1));
         Assertions.assertTrue(list.add(2));
         Assertions.assertTrue(list.add(3));
@@ -244,7 +243,6 @@ class LinkedListTests {
 
     @Test
     void remove() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -281,7 +279,6 @@ class LinkedListTests {
 
     @Test
     void containsAll() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -307,7 +304,6 @@ class LinkedListTests {
         array.add(4);
         array.add(5);
 
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.addAll(array);
 
@@ -326,7 +322,7 @@ class LinkedListTests {
         array.add(43);
         array.add(44);
 
-        LinkedList<Integer> list = new LinkedList<>();
+        // Is Empty
         list.addAll(0, array);
 
         Assertions.assertEquals(42, list.get(0));
@@ -374,7 +370,6 @@ class LinkedListTests {
 
     @Test
     void removeAll() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -393,7 +388,6 @@ class LinkedListTests {
 
     @Test
     void retainAll() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -411,7 +405,6 @@ class LinkedListTests {
 
     @Test
     void clear() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -426,7 +419,6 @@ class LinkedListTests {
 
     @Test
     void get() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -443,7 +435,6 @@ class LinkedListTests {
 
     @Test
     void set() {
-        LinkedList<Integer> list = new LinkedList<>();
         Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> list.set(0, 0));
         list.add(1);
         list.add(2);
@@ -464,7 +455,6 @@ class LinkedListTests {
 
     @Test
     void indexAdd() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(0, 2);     // head and isEmpty
         list.add(0, 1);     // head
         list.add(2, 5);     // tail
@@ -481,7 +471,6 @@ class LinkedListTests {
 
     @Test
     void removeObject() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -497,7 +486,6 @@ class LinkedListTests {
 
     @Test
     void indexOf() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(3);
         list.add(2);
@@ -509,7 +497,6 @@ class LinkedListTests {
 
     @Test
     void lastIndexOf() {
-        LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(3);
         list.add(2);
@@ -521,19 +508,16 @@ class LinkedListTests {
 
     @Test
     void listIterator() {
-        LinkedList<Integer> list = new LinkedList<>();
         Assertions.assertThrows(UnsupportedOperationException.class, list::listIterator);
     }
 
     @Test
     void indexListIterator() {
-        LinkedList<Integer> list = new LinkedList<>();
         Assertions.assertThrows(UnsupportedOperationException.class, () -> list.listIterator(0));
     }
 
     @Test
     void subList() {
-        LinkedList<Integer> list = new LinkedList<>();
         Assertions.assertThrows(UnsupportedOperationException.class, () -> list.subList(0, 0));
     }
 }
