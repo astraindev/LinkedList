@@ -15,3 +15,7 @@ interface.
 ## Old School
 
 I was able to save the old school code and JUnit tests. Feel free to check those out too.
+
+## Basic
+
+Before Java, linked lists were pretty bare bones. This only has one `isEmpty()` convenience method and two insert and remove methods.
