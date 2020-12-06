@@ -1,6 +1,7 @@
 package old.school.linked.list;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * Represents a node for a linked list. Nodes store a generic element and a pointer to the next node.
@@ -70,9 +71,6 @@ public class OldSchoolNode<E> implements Iterator<OldSchoolNode<E>> {
 
     @Override
     public int hashCode() {
-        int hash = 65537;
-        hash = 32771 * hash + element.toString().length();
-        hash = 32771 * hash + element.hashCode();
-        return hash;
+        return Objects.hash(element);
     }
 }

@@ -1,6 +1,7 @@
 package old.school.linked.list;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * This is an old-school linked list. Pretty much straight out of the
@@ -284,12 +285,7 @@ public class OldSchoolLinkedList<E> implements Iterator<E>, Iterable<E> {
 
     @Override
     public int hashCode() {
-        int hash = 1033;
-        hash = 5039 * hash + size;
-        hash = 5039 * hash + (head == null ? 0 : head.hashCode());
-        hash = 5039 * hash + super.hashCode();
-
-        return hash;
+        return Objects.hash(size, head == null ? 0 : head);
     }
 
     /**
