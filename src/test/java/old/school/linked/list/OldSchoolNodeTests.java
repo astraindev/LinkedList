@@ -1,22 +1,21 @@
 package old.school.linked.list;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
-@DisplayName("Node Tests")
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 public class OldSchoolNodeTests {
     @Test
     void constructor() {
         OldSchoolNode<Integer> node = new OldSchoolNode<>(42);
-        Assertions.assertEquals(42, node.getElement());
-        Assertions.assertNull(node.getNextNode());
+        Assert.assertEquals(node.getElement(), new Integer(42));
+        Assert.assertNull(node.getNextNode());
     }
 
     @Test
     void getElement() {
         OldSchoolNode<Integer> node = new OldSchoolNode<>(42);
-        Assertions.assertEquals(42, node.getElement());
+        Assert.assertEquals(node.getElement(), new Integer(42));
     }
 
     @Test
@@ -25,8 +24,8 @@ public class OldSchoolNodeTests {
         OldSchoolNode<Integer> node2 = new OldSchoolNode<>(72);
         node1.setNextNode(node2);
 
-        Assertions.assertEquals(node2, node1.getNextNode());
-        Assertions.assertNull(node2.getNextNode());
+        Assert.assertEquals(node1.getNextNode(), node2);
+        Assert.assertNull(node2.getNextNode());
     }
 
     @Test
@@ -38,14 +37,14 @@ public class OldSchoolNodeTests {
         node2.setNextNode(node3);
         OldSchoolNode<Integer> head = node1;
 
-        Assertions.assertEquals(42, head.getElement());
-        Assertions.assertTrue(head.hasNext());
+        Assert.assertEquals(head.getElement(), new Integer(42));
+        Assert.assertTrue(head.hasNext());
         head = head.getNextNode();
-        Assertions.assertEquals(72, head.getElement());
-        Assertions.assertTrue(head.hasNext());
+        Assert.assertEquals(head.getElement(), new Integer(72));
+        Assert.assertTrue(head.hasNext());
         head = head.getNextNode();
-        Assertions.assertEquals(52, head.getElement());
-        Assertions.assertFalse(head.hasNext());
+        Assert.assertEquals(head.getElement(), new Integer(52));
+        Assert.assertFalse(head.hasNext());
     }
 
     @Test
@@ -54,8 +53,8 @@ public class OldSchoolNodeTests {
         OldSchoolNode<Integer> node2 = new OldSchoolNode<>(72);
         OldSchoolNode<Integer> node3 = new OldSchoolNode<>(42);
 
-        Assertions.assertNotSame(node1, node3);
-        Assertions.assertEquals(node3, node1);
-        Assertions.assertNotEquals(node2, node1);
+        Assert.assertNotSame(node1, node3);
+        Assert.assertEquals(node1, node3);
+        Assert.assertNotEquals(node1, node2);
     }
 }
