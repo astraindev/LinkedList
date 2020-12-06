@@ -1,13 +1,13 @@
-package old.school.linked.list;
+package old.school.linked.list.basic;
 
-public class SimpleLinkedList<E> {
+public class LinkedList<E> {
     private Node<E> head;
 
-    public SimpleLinkedList() {
+    public LinkedList() {
         head = null;
     }
 
-    public SimpleLinkedList(Node<E> head) {
+    public LinkedList(Node<E> head) {
         this.head = head;
     }
 
@@ -23,16 +23,31 @@ public class SimpleLinkedList<E> {
         this.head = head;
     }
 
+    /**
+     * Inserts the new node after the given, reference node.
+     * @param node the reference node
+     * @param newNode the node to be inserted
+     */
     public void insertAfter(Node<E> node, Node<E> newNode) {
         newNode.setNext(node.getNext());
         node.setNext(newNode);
     }
 
+    /**
+     * Inserts the given node at the very beginning of the linked list.
+     *
+     * @param newNode the node to be placed as the head of the list
+     */
     public void insert(Node<E> newNode) {
         newNode.setNext(head);
         head = newNode;
     }
 
+    /**
+     * Removes the node after the given, reference node.
+     *
+     * @param node the reference node
+     */
     public void removeAfter(Node<E> node) {
         node.setNext(node.getNext().getNext());
     }

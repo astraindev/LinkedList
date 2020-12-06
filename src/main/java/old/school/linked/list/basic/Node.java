@@ -1,4 +1,4 @@
-package old.school.linked.list;
+package old.school.linked.list.basic;
 
 import java.util.Objects;
 
